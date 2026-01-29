@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   Search,
+  GitCompare,
   FileText,
   Bell,
   LogOut,
@@ -16,6 +17,7 @@ import {
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Programme", href: "/matches", icon: Search },
+  { name: "Vergleichen", href: "/compare", icon: GitCompare },
   { name: "Anträge", href: "/applications", icon: FileText },
   { name: "Profil", href: "/profile", icon: Settings },
 ];
