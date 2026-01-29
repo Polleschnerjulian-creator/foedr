@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { ArrowRight, ArrowLeft, Loader2, Building2, MapPin, Users, Lightbulb, Check } from "lucide-react";
 
 const INDUSTRIES = [
@@ -54,9 +53,9 @@ const PLANS = [
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { data: session } = useSession();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     industry: "",
@@ -85,19 +84,25 @@ export default function OnboardingPage() {
 
   const handleSubmit = async () => {
     setLoading(true);
+    setError("");
+    
     try {
       const res = await fetch("/api/company", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
+        credentials: "include"
       });
 
-      if (!res.ok) throw new Error("Fehler beim Speichern");
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Fehler beim Speichern");
+      }
 
       router.push("/dashboard");
-    } catch (error) {
-      console.error(error);
-    } finally {
+    } catch (err: any) {
+      setError(err.message);
       setLoading(false);
     }
   };
@@ -123,6 +128,12 @@ export default function OnboardingPage() {
       {/* Content */}
       <main className="min-h-screen flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-xl">
+          
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+              {error}
+            </div>
+          )}
           
           {/* Step 1: Company Name */}
           {step === 1 && (
@@ -244,7 +255,7 @@ export default function OnboardingPage() {
               </div>
               <div className="space-y-3">
                 {PLANS.map((plan) => {
-                  const isSelected = form[plan.key as keyof typeof form];
+                  const isSelected = form[plan.key as keyof typeof form] as boolean;
                   return (
                     <button
                       key={plan.key}
