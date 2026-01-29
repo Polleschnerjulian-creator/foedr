@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
+import { calculateMatches } from "@/lib/matching/engine";
 
 export async function POST(req: Request) {
   try {
@@ -20,6 +21,7 @@ export async function POST(req: Request) {
 
     const data = await req.json();
 
+    // Create or update company
     const company = await db.company.upsert({
       where: { userId: user.id },
       update: {
@@ -55,7 +57,41 @@ export async function POST(req: Request) {
       }
     });
 
-    return NextResponse.json({ company });
+    // Get all active programs
+    const programs = await db.program.findMany({
+      where: { isActive: true }
+    });
+
+    // Calculate matches
+    const matchResults = calculateMatches(company, programs);
+
+    // Delete old matches for this company
+    await db.match.deleteMany({
+      where: { companyId: company.id }
+    });
+
+    // Create new matches
+    for (const result of matchResults) {
+      if (result.eligible && result.score >= 40) {
+        await db.match.create({
+          data: {
+            companyId: company.id,
+            programId: result.programId,
+            score: result.score,
+            eligible: result.eligible,
+            reasons: result.reasons,
+            risks: result.risks,
+            nextSteps: result.nextSteps,
+            status: "NEW",
+          }
+        });
+      }
+    }
+
+    return NextResponse.json({ 
+      company,
+      matchCount: matchResults.filter(r => r.eligible && r.score >= 40).length
+    });
   } catch (error) {
     console.error("Company creation error:", error);
     return NextResponse.json({ error: "Fehler beim Speichern" }, { status: 500 });
