@@ -67,10 +67,10 @@ export default async function MatchDetailPage({ params }: { params: { id: string
             <Banknote className="w-5 h-5 text-white/40 mb-3" />
             <p className="text-white/40 text-sm">Maximale Förderung</p>
             <p className="text-2xl font-bold mt-1">
-              €{(program.maxAmount || 0).toLocaleString("de-DE")}
+              {new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(program.maxAmount || 0)}
             </p>
           </div>
-          {program.fundingRate && (
+          {program.fundingRate && program.fundingRate > 0 && (
             <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
               <Building2 className="w-5 h-5 text-white/40 mb-3" />
               <p className="text-white/40 text-sm">Förderquote</p>
@@ -141,7 +141,7 @@ export default async function MatchDetailPage({ params }: { params: { id: string
 
         <div className="flex items-center gap-4">
           {program.url && (
-            
+            <Link
               href={program.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -149,7 +149,7 @@ export default async function MatchDetailPage({ params }: { params: { id: string
             >
               Offizielle Seite besuchen
               <ExternalLink className="w-4 h-4" />
-            </a>
+            </Link>
           )}
           <button className="flex items-center gap-2 px-6 py-3 bg-white/10 rounded-full font-semibold hover:bg-white/20 transition-colors">
             Als interessant markieren
