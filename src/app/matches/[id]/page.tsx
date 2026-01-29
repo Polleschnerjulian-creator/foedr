@@ -3,7 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import DashboardLayout from "@/components/dashboard/layout";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Check, AlertTriangle, ArrowRight, Calendar, Banknote, Building2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Check, AlertTriangle, Calendar, Banknote, Building2 } from "lucide-react";
 
 export default async function MatchDetailPage({ params }: { params: { id: string } }) {
   const session = await getServerSession();
@@ -36,7 +36,6 @@ export default async function MatchDetailPage({ params }: { params: { id: string
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto">
-        {/* Back */}
         <Link 
           href="/dashboard" 
           className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-8 transition-colors"
@@ -45,7 +44,6 @@ export default async function MatchDetailPage({ params }: { params: { id: string
           Zurück zum Dashboard
         </Link>
 
-        {/* Header */}
         <div className="flex items-start justify-between gap-6 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -64,7 +62,6 @@ export default async function MatchDetailPage({ params }: { params: { id: string
           </div>
         </div>
 
-        {/* Key Info */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
             <Banknote className="w-5 h-5 text-white/40 mb-3" />
@@ -89,13 +86,11 @@ export default async function MatchDetailPage({ params }: { params: { id: string
           </div>
         </div>
 
-        {/* Description */}
         <div className="p-6 rounded-2xl bg-white/5 border border-white/10 mb-8">
           <h2 className="text-lg font-semibold mb-3">Beschreibung</h2>
           <p className="text-white/60 leading-relaxed">{program.description}</p>
         </div>
 
-        {/* Why it matches */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
@@ -130,7 +125,6 @@ export default async function MatchDetailPage({ params }: { params: { id: string
           )}
         </div>
 
-        {/* Next Steps */}
         <div className="p-6 rounded-2xl bg-white/5 border border-white/10 mb-8">
           <h2 className="text-lg font-semibold mb-4">Nächste Schritte</h2>
           <div className="space-y-3">
@@ -145,7 +139,6 @@ export default async function MatchDetailPage({ params }: { params: { id: string
           </div>
         </div>
 
-        {/* CTA */}
         <div className="flex items-center gap-4">
           {program.url && (
             
