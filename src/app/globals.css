@@ -3,30 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --background: #fafafa;
-  --foreground: #0a0a0a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
-  }
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
+  font-family: var(--font-inter);
 }
 
-/* Smooth scrolling */
+.font-serif {
+  font-family: var(--font-playfair);
+}
+
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection color */
 ::selection {
-  background-color: #10B981;
-  color: white;
+  background-color: rgba(16, 185, 129, 0.2);
 }

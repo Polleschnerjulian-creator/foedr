@@ -1,174 +1,145 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Check, Zap, Shield, Clock, Target } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#FAF9F7] text-[#1a1a1a] selection:bg-emerald-200">
+    <div className="min-h-screen bg-[#FAFAF8]">
       
       {/* Nav */}
-      <nav className="fixed top-0 w-full z-50 bg-[#FAF9F7]/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-semibold tracking-tight">
-            foedr<span className="text-emerald-600">.</span>
+      <nav className="fixed top-0 w-full z-50 bg-[#FAFAF8]/90 backdrop-blur-md border-b border-black/5">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="text-xl tracking-tight">
+            <span className="font-serif font-semibold">foedr</span><span className="text-emerald-600 font-serif">.</span>
           </Link>
-          <div className="hidden md:flex items-center gap-10">
-            <Link href="#features" className="text-sm text-zinc-600 hover:text-black transition-colors">
-              Features
-            </Link>
-            <Link href="#how" className="text-sm text-zinc-600 hover:text-black transition-colors">
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="#how" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
               So funktioniert's
             </Link>
-            <Link href="#pricing" className="text-sm text-zinc-600 hover:text-black transition-colors">
-              Preise
+            <Link href="#features" className="text-[13px] text-neutral-500 hover:text-black transition-colors">
+              Features
             </Link>
           </div>
           <Link
             href="/auth/signup"
-            className="text-sm px-5 py-2.5 bg-[#1a1a1a] text-white rounded-full font-medium hover:bg-black transition-colors"
+            className="text-[13px] px-4 py-2 bg-neutral-900 text-white rounded-full hover:bg-black transition-colors"
           >
-            Beta starten
+            Beta beitreten
           </Link>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="pt-40 pb-24 px-6">
-        <div className="max-w-5xl mx-auto text-center">
+      <section className="min-h-[90vh] flex items-center justify-center px-6 pt-16">
+        <div className="max-w-4xl mx-auto text-center">
+          
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-sm text-emerald-700 font-medium">Jetzt in der Beta</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 mb-10">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-xs text-emerald-700 font-medium tracking-wide">BETA LIVE</span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.1] mb-6">
-            Wo Fördermittel
+          <h1 className="font-serif text-[clamp(2.5rem,8vw,5.5rem)] font-medium leading-[1.05] tracking-tight text-neutral-900 mb-6">
+            Fördermittel,
             <br />
-            <span className="text-zinc-400">gefunden werden.</span>
+            <span className="text-neutral-300">die du verdienst.</span>
           </h1>
 
           {/* Subline */}
-          <p className="text-lg sm:text-xl text-zinc-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Eine intelligente Plattform, die passende Förderprogramme für dein Unternehmen findet – automatisch und in Minuten.
+          <p className="text-neutral-500 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+            2.500+ Programme. Eine Plattform. foedr findet in Minuten, 
+            welche Förderungen zu deinem Unternehmen passen.
           </p>
 
           {/* CTA */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-3">
             <Link
               href="/auth/signup"
-              className="group flex items-center gap-2 px-7 py-4 bg-[#1a1a1a] text-white rounded-full font-medium hover:bg-black transition-all"
+              className="group inline-flex items-center gap-2 px-6 py-3.5 bg-neutral-900 text-white rounded-full text-sm font-medium hover:bg-black transition-all"
             >
               Kostenlos starten
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="#how"
-              className="flex items-center gap-2 px-7 py-4 text-zinc-500 hover:text-black transition-colors"
-            >
-              Mehr erfahren
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
+
+          {/* Trust */}
+          <p className="mt-8 text-xs text-neutral-400">
+            Keine Kreditkarte · 2 Min Setup · DSGVO-konform
+          </p>
         </div>
       </section>
 
-      {/* Bento Stats Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Stats Bento */}
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-6 gap-3">
             
-            {/* Big Card */}
-            <div className="md:col-span-2 p-10 rounded-[2rem] bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-100">
-              <p className="text-6xl sm:text-8xl font-bold tracking-tight text-emerald-900">
-                120 Mrd<span className="text-emerald-500">.</span>
+            {/* Main Stat */}
+            <div className="col-span-6 md:col-span-4 bg-emerald-600 rounded-[1.75rem] p-10 text-white">
+              <p className="font-serif text-[clamp(3rem,10vw,6rem)] font-medium leading-none tracking-tight">
+                120 Mrd€
               </p>
-              <p className="text-zinc-600 mt-6 text-lg max-w-md">
-                Euro Fördermittel-Volumen jährlich in Deutschland. Der Großteil bleibt ungenutzt – bis jetzt.
-              </p>
-            </div>
-            
-            {/* Small Card */}
-            <div className="p-10 rounded-[2rem] bg-white border border-zinc-100">
-              <p className="text-5xl sm:text-6xl font-bold tracking-tight">94<span className="text-emerald-500">%</span></p>
-              <p className="text-zinc-500 mt-4">
-                der KMU kennen ihre Fördermöglichkeiten nicht.
+              <p className="text-emerald-100 mt-4 text-base max-w-sm">
+                Fördermittel-Volumen jährlich in Deutschland – der Großteil ungenutzt.
               </p>
             </div>
 
-            {/* Small Card */}
-            <div className="p-10 rounded-[2rem] bg-white border border-zinc-100">
-              <p className="text-5xl sm:text-6xl font-bold tracking-tight">2.500<span className="text-zinc-300">+</span></p>
-              <p className="text-zinc-500 mt-4">
-                Programme von Bund, Ländern und EU.
+            {/* Side Stat */}
+            <div className="col-span-6 md:col-span-2 bg-white rounded-[1.75rem] p-8 border border-neutral-100">
+              <p className="font-serif text-5xl font-medium text-neutral-900">94%</p>
+              <p className="text-neutral-500 mt-3 text-sm">
+                der KMU kennen ihre Optionen nicht
+              </p>
+            </div>
+
+            {/* Bottom Left */}
+            <div className="col-span-6 md:col-span-2 bg-white rounded-[1.75rem] p-8 border border-neutral-100">
+              <p className="font-serif text-5xl font-medium text-neutral-900">2.500<span className="text-neutral-200">+</span></p>
+              <p className="text-neutral-500 mt-3 text-sm">
+                Förderprogramme durchsuchbar
               </p>
             </div>
 
             {/* CTA Card */}
-            <div className="md:col-span-2 p-10 rounded-[2rem] bg-[#1a1a1a] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="col-span-6 md:col-span-4 bg-neutral-900 rounded-[1.75rem] p-10 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
-                <p className="text-2xl sm:text-3xl font-semibold">Das ändern wir.</p>
-                <p className="text-zinc-400 mt-2">KI-gestütztes Matching in unter 5 Minuten.</p>
+                <p className="font-serif text-2xl font-medium">Das ändern wir.</p>
+                <p className="text-neutral-400 mt-1 text-sm">KI-Matching in unter 5 Minuten.</p>
               </div>
               <Link 
                 href="/auth/signup"
-                className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-emerald-400 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-neutral-900 rounded-full text-sm font-medium hover:bg-emerald-400 transition-colors"
               >
-                Jetzt starten
+                Starten
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how" className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-            <div>
-              <p className="text-emerald-600 font-medium mb-3 text-sm tracking-wide uppercase">So funktioniert's</p>
-              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                Drei Schritte.<br />Mehr nicht.
-              </h2>
-            </div>
-            <Link 
-              href="/auth/signup"
-              className="flex items-center gap-2 px-5 py-2.5 bg-zinc-100 hover:bg-zinc-200 rounded-full text-sm font-medium transition-colors"
-            >
-              Jetzt ausprobieren
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+      {/* How */}
+      <section id="how" className="py-24 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          
+          <div className="mb-16">
+            <p className="text-xs text-emerald-600 font-medium tracking-widest uppercase mb-3">Prozess</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-medium text-neutral-900">
+              Drei Schritte. Das war's.
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              {
-                step: "01",
-                title: "Profil anlegen",
-                desc: "Beantworte 5 kurze Fragen zu deinem Unternehmen. Dauert keine 2 Minuten.",
-              },
-              {
-                step: "02", 
-                title: "KI analysiert",
-                desc: "Unser Algorithmus durchsucht 2.500+ Förderprogramme nach den besten Matches.",
-              },
-              {
-                step: "03",
-                title: "Ergebnisse erhalten",
-                desc: "Sieh sofort welche Förderungen dir zustehen – mit allen Details und Fristen.",
-              }
-            ].map((item, i) => (
-              <div 
-                key={i}
-                className="group p-8 rounded-[1.5rem] bg-white border border-zinc-100 hover:border-zinc-200 hover:shadow-lg hover:shadow-zinc-100 transition-all"
-              >
-                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-zinc-100 text-sm font-semibold text-zinc-500 mb-6">
-                  {item.step}
-                </span>
-                <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                <p className="text-zinc-500 leading-relaxed">{item.desc}</p>
+              { num: "01", title: "Profil", desc: "5 Fragen zu deinem Unternehmen. Dauert 2 Minuten." },
+              { num: "02", title: "Analyse", desc: "KI durchsucht 2.500+ Programme nach Matches." },
+              { num: "03", title: "Ergebnis", desc: "Passende Förderungen mit Details und Fristen." },
+            ].map((step, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-[#FAFAF8] border border-neutral-100 hover:border-neutral-200 transition-colors">
+                <span className="text-xs text-neutral-300 font-medium">{step.num}</span>
+                <h3 className="font-serif text-xl font-medium mt-4 mb-2 text-neutral-900">{step.title}</h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -176,92 +147,65 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-24 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      <section id="features" className="py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          
           <div className="text-center mb-16">
-            <p className="text-emerald-600 font-medium mb-3 text-sm tracking-wide uppercase">Features</p>
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-              Gebaut für den Mittelstand.
+            <p className="text-xs text-emerald-600 font-medium tracking-widest uppercase mb-3">Features</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-medium text-neutral-900">
+              Für den Mittelstand gebaut.
             </h2>
-            <p className="text-zinc-500 mt-4 text-lg max-w-2xl mx-auto">
-              Keine generische Lösung. foedr. versteht die Komplexität deutscher Förderlandschaft.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { icon: Zap, title: "Schnell", desc: "Ergebnisse in Minuten, nicht Wochen" },
-              { icon: Target, title: "Präzise", desc: "KI-Scoring für beste Trefferquote" },
-              { icon: Clock, title: "Fristen-Alerts", desc: "Nie wieder Deadlines verpassen" },
-              { icon: Shield, title: "DSGVO-konform", desc: "Deine Daten bleiben in Deutschland" },
+              { emoji: "⚡", label: "Schnell" },
+              { emoji: "🎯", label: "Präzise" },
+              { emoji: "🔔", label: "Alerts" },
+              { emoji: "🔒", label: "DSGVO" },
             ].map((f, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-[#FAF9F7] border border-zinc-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
-                  <f.icon className="w-5 h-5 text-emerald-600" />
-                </div>
-                <h3 className="font-semibold mb-1">{f.title}</h3>
-                <p className="text-sm text-zinc-500">{f.desc}</p>
+              <div key={i} className="p-6 rounded-2xl bg-white border border-neutral-100 text-center">
+                <span className="text-3xl">{f.emoji}</span>
+                <p className="text-sm font-medium text-neutral-900 mt-3">{f.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="py-16 px-6 border-y border-zinc-100 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-center text-sm text-zinc-400 mb-8">Bekannt aus führenden Förderprogrammen</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-50">
-            <span className="text-xl font-semibold text-zinc-400">BAFA</span>
-            <span className="text-xl font-semibold text-zinc-400">KfW</span>
-            <span className="text-xl font-semibold text-zinc-400">BMWK</span>
-            <span className="text-xl font-semibold text-zinc-400">EU Horizon</span>
-            <span className="text-xl font-semibold text-zinc-400">ZIM</span>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
+      {/* Final CTA */}
       <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="p-12 sm:p-16 rounded-[2.5rem] bg-gradient-to-b from-emerald-50 to-emerald-100/30 border border-emerald-100">
-            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4">
-              Bereit dein Förderpotenzial<br />zu entdecken?
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-gradient-to-b from-emerald-50 to-emerald-100/50 rounded-[2rem] p-12 md:p-16 text-center border border-emerald-100">
+            <h2 className="font-serif text-3xl md:text-5xl font-medium text-neutral-900 mb-4">
+              Bereit?
             </h2>
-            <p className="text-zinc-500 mb-8 text-lg">
-              Kostenlos starten. Keine Kreditkarte nötig.
-            </p>
-            
+            <p className="text-neutral-500 mb-8">Finde in 5 Minuten dein Förderpotenzial.</p>
             <Link
               href="/auth/signup"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#1a1a1a] text-white rounded-full font-semibold hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-neutral-900 text-white rounded-full font-medium hover:bg-black transition-colors"
             >
               Jetzt starten
               <ArrowRight className="w-5 h-5" />
             </Link>
-
-            <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-sm text-zinc-500">
-              <span className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-500" /> Kostenlose Beta</span>
-              <span className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-500" /> Setup in 2 Min</span>
-              <span className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-500" /> DSGVO-konform</span>
+            <div className="flex flex-wrap justify-center gap-4 mt-8 text-xs text-neutral-500">
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-500" />Kostenlos</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-500" />2 Min Setup</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-500" />DSGVO</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-zinc-100">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <span className="text-xl font-semibold">foedr<span className="text-emerald-600">.</span></span>
-            <span className="text-zinc-300">|</span>
-            <span className="text-sm text-zinc-400">Fördermittel. Automatisiert.</span>
-          </div>
-          <div className="flex items-center gap-8 text-sm text-zinc-400">
+      <footer className="py-10 px-6 border-t border-neutral-100">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="font-serif text-lg">foedr<span className="text-emerald-600">.</span></span>
+          <div className="flex gap-6 text-xs text-neutral-400">
             <Link href="/impressum" className="hover:text-black transition-colors">Impressum</Link>
             <Link href="/datenschutz" className="hover:text-black transition-colors">Datenschutz</Link>
-            <Link href="/kontakt" className="hover:text-black transition-colors">Kontakt</Link>
           </div>
+          <span className="text-xs text-neutral-300">© 2026</span>
         </div>
       </footer>
     </div>
