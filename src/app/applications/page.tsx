@@ -2,6 +2,7 @@
 
 import { useState, useEffect, DragEvent } from "react";
 import DashboardLayout from "@/components/dashboard/layout";
+import Link from "next/link";
 import { 
   Loader2, 
   Search, 
@@ -15,7 +16,8 @@ import {
   Calculator,
   CalendarDays,
   CheckCircle2,
-  Circle
+  Circle,
+  PenTool
 } from "lucide-react";
 
 interface Program {
@@ -31,11 +33,6 @@ interface Match {
   score: number;
   status: string;
   program: Program;
-  // Readiness checklist (stored in match or local state)
-  hasProjectDescription?: boolean;
-  hasCostPlan?: boolean;
-  hasTimeline?: boolean;
-  hasFundingLogic?: boolean;
 }
 
 const COLUMNS = [
@@ -63,7 +60,6 @@ export default function ApplicationsPage() {
 
   useEffect(() => {
     fetchMatches();
-    // Load readiness from localStorage
     const saved = localStorage.getItem("foedr-readiness");
     if (saved) {
       setReadiness(JSON.parse(saved));
@@ -151,7 +147,6 @@ export default function ApplicationsPage() {
     }).format(amount);
   };
 
-  // Calculate totals
   const totalPotential = matches
     .filter(m => m.status === "WON")
     .reduce((sum, m) => sum + (m.program.maxAmount || 0), 0);
@@ -174,7 +169,7 @@ export default function ApplicationsPage() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold">Anträge verwalten</h1>
           <p className="text-white/40 mt-1">
-            Ziehe Programme zwischen den Spalten. Checklist ausfüllen in "In Vorbereitung".
+            Ziehe Programme zwischen den Spalten. In "In Vorbereitung" kannst du den Antrag vorbereiten.
           </p>
         </div>
 
@@ -248,6 +243,16 @@ export default function ApplicationsPage() {
                         {/* Readiness Section - Only in PREPARING */}
                         {showChecklist && (
                           <div className="mt-3 pt-3 border-t border-white/10">
+                            {/* Editor Button */}
+                            <Link
+                              href={`/applications/${match.id}/editor`}
+                              className="w-full flex items-center justify-center gap-2 px-3 py-2 mb-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 hover:from-blue-500/30 hover:to-purple-500/30 border border-blue-500/30 rounded-lg text-sm font-medium transition-all"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <PenTool className="w-4 h-4 text-blue-400" />
+                              Antrag vorbereiten
+                            </Link>
+
                             {/* Readiness Score Bar */}
                             <div className="flex items-center justify-between mb-2">
                               <span className="text-xs text-white/40">Readiness</span>
