@@ -5,7 +5,8 @@ import DashboardLayout from "@/components/dashboard/layout";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Check, AlertTriangle, Calendar, Banknote, Building2 } from "lucide-react";
 
-export default async function MatchDetailPage({ params }: { params: { id: string } }) {
+export default async function MatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await getServerSession();
 
   if (!session?.user?.email) {
@@ -13,7 +14,7 @@ export default async function MatchDetailPage({ params }: { params: { id: string
   }
 
   const match = await db.match.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { 
       program: true,
       company: true
