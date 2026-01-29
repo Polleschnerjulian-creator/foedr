@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import DashboardLayout from "@/components/dashboard/layout";
 import Link from "next/link";
-import { Search, Filter, ArrowUpRight } from "lucide-react";
+import { Search, ArrowUpRight, GitCompare } from "lucide-react";
 
 export default async function MatchesPage() {
   const session = await getServerSession();
@@ -14,7 +14,7 @@ export default async function MatchesPage() {
 
   const user = await db.user.findUnique({
     where: { email: session.user.email },
-    include: { company: true }
+    include: { company: true },
   });
 
   if (!user?.company) {
@@ -24,7 +24,7 @@ export default async function MatchesPage() {
   const matches = await db.match.findMany({
     where: { companyId: user.company.id },
     include: { program: true },
-    orderBy: { score: "desc" }
+    orderBy: { score: "desc" },
   });
 
   const typeLabels: Record<string, string> = {
@@ -52,22 +52,25 @@ export default async function MatchesPage() {
               {matches.length} Programme gefunden für {user.company.name}
             </p>
           </div>
+          {matches.length >= 2 && (
+            <Link
+              href="/compare"
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 rounded-xl text-sm font-medium transition-colors"
+            >
+              <GitCompare className="w-4 h-4" />
+              Vergleichen
+            </Link>
+          )}
         </div>
 
-        {/* Filters */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex-1 relative">
-            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
-            <input
-              type="text"
-              placeholder="Programme durchsuchen..."
-              className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-white/20"
-            />
-          </div>
-          <button className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white/60 hover:text-white hover:border-white/20 transition-colors">
-            <Filter className="w-4 h-4" />
-            Filter
-          </button>
+        {/* Search */}
+        <div className="relative mb-6">
+          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
+          <input
+            type="text"
+            placeholder="Programme durchsuchen..."
+            className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-white/20"
+          />
         </div>
 
         {/* List */}
@@ -85,14 +88,23 @@ export default async function MatchesPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-lg">{match.program.name}</h3>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${typeColors[match.program.type] || "bg-white/10"}`}>
+                      <h3 className="font-semibold text-lg">
+                        {match.program.name}
+                      </h3>
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full ${
+                          typeColors[match.program.type] || "bg-white/10"
+                        }`}
+                      >
                         {typeLabels[match.program.type] || match.program.type}
                       </span>
                     </div>
                     <p className="text-white/40 text-sm">
-                      {match.program.provider} · Bis zu €{(match.program.maxAmount || 0).toLocaleString("de-DE")}
-                      {match.program.fundingRate && ` · ${match.program.fundingRate}% Förderquote`}
+                      {match.program.provider} · Bis zu €
+                      {(match.program.maxAmount || 0).toLocaleString("de-DE")}
+                      {match.program.fundingRate
+                        ? ` · ${match.program.fundingRate}% Förderquote`
+                        : ""}
                     </p>
                   </div>
                 </div>
@@ -105,7 +117,10 @@ export default async function MatchesPage() {
         {matches.length === 0 && (
           <div className="text-center py-16">
             <p className="text-white/40">Keine passenden Programme gefunden.</p>
-            <Link href="/onboarding" className="text-white underline mt-2 inline-block">
+            <Link
+              href="/onboarding"
+              className="text-white underline mt-2 inline-block"
+            >
               Profil aktualisieren
             </Link>
           </div>
