@@ -3,82 +3,110 @@ import { ArrowRight, Check, Zap, Clock, Shield, Target, ChevronRight } from "luc
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-[#0A0A0A] text-white">
       
       {/* Nav */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-black/5">
+      <nav className="fixed top-0 w-full z-50 bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-[1100px] mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="text-[15px] font-semibold tracking-tight">
-            foedr.
+          <Link href="/" className="text-[17px] font-bold tracking-tight">
+            foedr<span className="text-white/30">.</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#problem" className="text-[13px] text-black/50 hover:text-black transition-colors">Problem</Link>
-            <Link href="#solution" className="text-[13px] text-black/50 hover:text-black transition-colors">Lösung</Link>
-            <Link href="#how" className="text-[13px] text-black/50 hover:text-black transition-colors">Prozess</Link>
+            <Link href="#problem" className="text-[13px] text-white/40 hover:text-white transition-colors">Problem</Link>
+            <Link href="#how" className="text-[13px] text-white/40 hover:text-white transition-colors">Prozess</Link>
           </div>
-          <Link href="/auth/signup" className="text-[13px] px-4 py-1.5 bg-black text-white rounded-full hover:bg-black/80 transition-colors">
-            Kostenlos starten
+          <Link href="/auth/signup" className="text-[13px] px-4 py-1.5 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-colors">
+            Starten
           </Link>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-[900px] mx-auto text-center">
+      <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+        
+        {/* Animated gradient background */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-white/[0.07] via-white/[0.03] to-transparent rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-white/[0.03] rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-white/[0.02] rounded-full blur-3xl" />
+        </div>
+
+        {/* Grid pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
+
+        <div className="relative z-10 max-w-[1000px] mx-auto text-center">
           
-          {/* Social Proof Badge */}
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-black/10 bg-black/[0.02] mb-8">
-            <div className="flex -space-x-2">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-black/20 to-black/5 border-2 border-white" />
-              ))}
-            </div>
-            <span className="text-[13px] text-black/60">
-              <span className="font-semibold text-black">127 Unternehmen</span> nutzen foedr bereits
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur mb-8">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-40"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
             </span>
+            <span className="text-[12px] text-white/60 font-medium">127 Unternehmen in der Beta</span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-[clamp(36px,6vw,56px)] font-semibold leading-[1.1] tracking-[-0.02em] mb-6">
-            Dein Unternehmen lässt
+          {/* Main Headline */}
+          <h1 className="text-[clamp(40px,8vw,90px)] font-bold leading-[0.95] tracking-[-0.03em] mb-6">
+            Fördermittel
             <br />
-            <span className="text-black/25">Geld auf dem Tisch liegen.</span>
+            <span className="bg-gradient-to-r from-white via-white/80 to-white/40 bg-clip-text text-transparent">
+              automatisiert.
+            </span>
           </h1>
 
-          {/* Subline */}
-          <p className="text-black/60 text-[18px] max-w-[520px] mx-auto mb-8 leading-relaxed">
-            94% der deutschen KMU verpassen Fördermittel, die ihnen zustehen. 
-            foedr. findet sie – in unter 5 Minuten.
+          {/* Sub */}
+          <p className="text-white/40 text-[18px] max-w-[500px] mx-auto mb-10 leading-relaxed">
+            120 Mrd. € jährlich. 2.500+ Programme. Eine Plattform, 
+            die findet, was deinem Unternehmen zusteht.
           </p>
 
-          {/* CTA Group */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Link
               href="/auth/signup"
-              className="group flex items-center gap-2 px-6 py-3.5 bg-black text-white rounded-full text-[15px] font-medium hover:bg-black/80 transition-all"
+              className="group flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full text-[15px] font-semibold hover:scale-[1.02] transition-transform"
             >
               Förderpotenzial berechnen
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <span className="text-[13px] text-black/40">Kostenlos · 2 Minuten</span>
           </div>
 
-          {/* Trust Row */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-black/40">
-            <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-black" /> Keine Kreditkarte</span>
-            <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-black" /> DSGVO-konform</span>
-            <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-black" /> Sofortige Ergebnisse</span>
+          {/* Trust */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-[12px] text-white/30">
+            <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> Kostenlos</span>
+            <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> 2 Minuten Setup</span>
+            <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> DSGVO-konform</span>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+          <div className="w-5 h-8 border border-white/20 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-white/40 rounded-full animate-bounce" />
           </div>
         </div>
       </section>
 
-      {/* Logos */}
-      <section className="py-12 px-6 border-y border-black/5">
-        <div className="max-w-[900px] mx-auto">
-          <p className="text-center text-[11px] text-black/30 uppercase tracking-widest mb-6">Förderprogramme die wir durchsuchen</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {["KfW", "BAFA", "BMWK", "ZIM", "EU Horizon", "DLR"].map((logo) => (
-              <span key={logo} className="text-[14px] font-semibold text-black/20">{logo}</span>
+      {/* Stats Bar */}
+      <section className="py-16 px-6 border-y border-white/5">
+        <div className="max-w-[1000px] mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[
+              { value: "120 Mrd €", label: "Fördervolumen/Jahr" },
+              { value: "2.500+", label: "Programme" },
+              { value: "94%", label: "verpassen Förderungen" },
+              { value: "5 Min", label: "bis zum Ergebnis" },
+            ].map((stat, i) => (
+              <div key={i}>
+                <p className="text-[28px] md:text-[36px] font-bold tracking-tight">{stat.value}</p>
+                <p className="text-white/30 text-[12px] mt-1">{stat.label}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -87,188 +115,156 @@ export default function Home() {
       {/* Problem Section */}
       <section id="problem" className="py-24 px-6">
         <div className="max-w-[1000px] mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="text-[11px] text-black/40 font-semibold uppercase tracking-widest mb-4">Das Problem</p>
-              <h2 className="text-[32px] font-semibold leading-tight tracking-tight mb-6">
-                120 Milliarden Euro.
-                <br />
-                <span className="text-black/30">Jedes Jahr ungenutzt.</span>
-              </h2>
-              <p className="text-black/60 text-[15px] leading-relaxed mb-6">
-                Deutschland hat eines der größten Fördersysteme der Welt. Aber die Komplexität 
-                aus 2.500+ Programmen, unterschiedlichen Anforderungen und Fristen macht es 
-                für KMU fast unmöglich, passende Förderungen zu finden.
-              </p>
-              <div className="space-y-3">
-                {[
-                  "Stundenlange Recherche in Förderdatenbanken",
-                  "Unklare Kriterien und komplizierte Anträge", 
-                  "Verpasste Fristen und abgelehnte Anträge"
-                ].map((pain, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-black/40" />
-                    </span>
-                    <span className="text-[14px] text-black/60">{pain}</span>
-                  </div>
-                ))}
+          
+          <div className="text-center mb-16">
+            <p className="text-[11px] text-white/30 font-semibold uppercase tracking-widest mb-4">Das Problem</p>
+            <h2 className="text-[clamp(28px,5vw,44px)] font-bold leading-tight tracking-tight">
+              Deutsche KMU lassen Milliarden
+              <br />
+              <span className="text-white/30">auf dem Tisch liegen.</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { title: "Zu komplex", desc: "2.500+ Programme mit unterschiedlichen Anforderungen, Fristen und Kriterien." },
+              { title: "Zu zeitaufwändig", desc: "Durchschnittlich 40+ Stunden Recherche pro Unternehmen." },
+              { title: "Zu riskant", desc: "73% Ablehnungsquote bei Erstanträgen wegen formaler Fehler." },
+            ].map((item, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
+                <h3 className="text-[18px] font-semibold mb-3">{item.title}</h3>
+                <p className="text-white/40 text-[14px] leading-relaxed">{item.desc}</p>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black text-white p-8 rounded-2xl">
-                <p className="text-[40px] font-semibold tracking-tight">94%</p>
-                <p className="text-white/60 text-[13px] mt-2">der KMU kennen ihre Fördermöglichkeiten nicht</p>
-              </div>
-              <div className="bg-black/[0.03] p-8 rounded-2xl">
-                <p className="text-[40px] font-semibold tracking-tight">2.500+</p>
-                <p className="text-black/50 text-[13px] mt-2">verschiedene Förderprogramme</p>
-              </div>
-              <div className="bg-black/[0.03] p-8 rounded-2xl">
-                <p className="text-[40px] font-semibold tracking-tight">40h</p>
-                <p className="text-black/50 text-[13px] mt-2">durchschnittliche Recherchezeit</p>
-              </div>
-              <div className="bg-black/[0.03] p-8 rounded-2xl">
-                <p className="text-[40px] font-semibold tracking-tight">73%</p>
-                <p className="text-black/50 text-[13px] mt-2">Ablehnungsquote bei Erstanträgen</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section id="solution" className="py-24 px-6 bg-black text-white">
+      {/* Solution */}
+      <section className="py-24 px-6">
         <div className="max-w-[1000px] mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-[11px] text-white/40 font-semibold uppercase tracking-widest mb-4">Die Lösung</p>
-            <h2 className="text-[32px] font-semibold leading-tight tracking-tight mb-4">
-              foedr. macht Fördermittel einfach.
-            </h2>
-            <p className="text-white/50 text-[15px] max-w-[500px] mx-auto">
-              Unsere KI analysiert dein Unternehmen und findet passende Programme – 
-              mit allem was du für den Antrag brauchst.
-            </p>
-          </div>
           
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { icon: Zap, title: "5 Min statt 40h", desc: "KI-Matching in Minuten" },
-              { icon: Target, title: "95% Genauigkeit", desc: "Präzise Programmauswahl" },
-              { icon: Clock, title: "Fristen-Alerts", desc: "Nie wieder verpassen" },
-              { icon: Shield, title: "DSGVO-konform", desc: "Daten bleiben in DE" },
-            ].map((feature, i) => (
-              <div key={i} className="p-6 rounded-xl bg-white/5 border border-white/10">
-                <feature.icon className="w-5 h-5 text-white/60 mb-4" />
-                <h3 className="text-[15px] font-semibold mb-1">{feature.title}</h3>
-                <p className="text-white/40 text-[13px]">{feature.desc}</p>
+          <div className="relative rounded-3xl bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 p-12 md:p-16 overflow-hidden">
+            
+            {/* Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-white/10 rounded-full blur-[100px]" />
+            
+            <div className="relative z-10 text-center">
+              <p className="text-[11px] text-white/30 font-semibold uppercase tracking-widest mb-4">Die Lösung</p>
+              <h2 className="text-[clamp(28px,5vw,44px)] font-bold leading-tight tracking-tight mb-4">
+                foedr. erledigt das für dich.
+              </h2>
+              <p className="text-white/40 text-[16px] max-w-[500px] mx-auto mb-12">
+                Unsere KI analysiert dein Unternehmen und matcht es mit 
+                passenden Förderprogrammen – in unter 5 Minuten.
+              </p>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { icon: Zap, label: "5 Min statt 40h" },
+                  { icon: Target, label: "95% Genauigkeit" },
+                  { icon: Clock, label: "Fristen-Alerts" },
+                  { icon: Shield, label: "DSGVO-konform" },
+                ].map((item, i) => (
+                  <div key={i} className="text-center">
+                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-3">
+                      <item.icon className="w-5 h-5 text-white/60" />
+                    </div>
+                    <p className="text-[13px] text-white/60">{item.label}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* How it works */}
       <section id="how" className="py-24 px-6">
-        <div className="max-w-[900px] mx-auto">
+        <div className="max-w-[800px] mx-auto">
+          
           <div className="text-center mb-16">
-            <p className="text-[11px] text-black/40 font-semibold uppercase tracking-widest mb-4">So funktioniert's</p>
-            <h2 className="text-[32px] font-semibold leading-tight tracking-tight">
-              In 3 Schritten zu deiner Förderung
+            <p className="text-[11px] text-white/30 font-semibold uppercase tracking-widest mb-4">Prozess</p>
+            <h2 className="text-[clamp(28px,5vw,40px)] font-bold leading-tight tracking-tight">
+              3 Schritte. Das war's.
             </h2>
           </div>
 
           <div className="space-y-4">
             {[
-              { num: "1", title: "Profil erstellen", desc: "Beantworte 5 kurze Fragen zu deinem Unternehmen. Branche, Größe, Vorhaben – das war's.", time: "2 Min" },
-              { num: "2", title: "KI analysiert", desc: "Unser Algorithmus durchsucht 2.500+ Förderprogramme und berechnet deine Matches.", time: "30 Sek" },
-              { num: "3", title: "Ergebnisse erhalten", desc: "Sieh sofort welche Programme passen, wie viel Geld möglich ist und was die nächsten Schritte sind.", time: "Sofort" },
+              { num: "01", title: "Profil erstellen", desc: "5 kurze Fragen zu deinem Unternehmen.", time: "2 Min" },
+              { num: "02", title: "KI analysiert", desc: "Wir durchsuchen 2.500+ Förderprogramme.", time: "30 Sek" },
+              { num: "03", title: "Matches erhalten", desc: "Sieh sofort, welche Programme passen.", time: "Sofort" },
             ].map((step, i) => (
-              <div key={i} className="flex gap-6 p-6 rounded-2xl border border-black/5 hover:border-black/10 hover:bg-black/[0.01] transition-all">
-                <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center text-[18px] font-semibold flex-shrink-0">
+              <div key={i} className="group flex items-center gap-6 p-6 rounded-2xl border border-white/5 hover:border-white/10 hover:bg-white/[0.02] transition-all">
+                <div className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center text-[15px] font-bold flex-shrink-0">
                   {step.num}
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
+                  <div className="flex items-center gap-3">
                     <h3 className="text-[17px] font-semibold">{step.title}</h3>
-                    <span className="text-[11px] text-black/40 px-2 py-0.5 rounded-full bg-black/5">{step.time}</span>
+                    <span className="text-[11px] text-white/30 px-2 py-0.5 rounded-full bg-white/5">{step.time}</span>
                   </div>
-                  <p className="text-black/50 text-[14px] leading-relaxed">{step.desc}</p>
+                  <p className="text-white/40 text-[14px] mt-1">{step.desc}</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-black/20 flex-shrink-0 self-center" />
+                <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-white/40 group-hover:translate-x-1 transition-all" />
               </div>
             ))}
-          </div>
-
-          {/* CTA */}
-          <div className="text-center mt-12">
-            <Link
-              href="/auth/signup"
-              className="group inline-flex items-center gap-2 px-6 py-3.5 bg-black text-white rounded-full text-[15px] font-medium hover:bg-black/80 transition-all"
-            >
-              Jetzt Förderpotenzial berechnen
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="py-24 px-6 bg-black/[0.02]">
-        <div className="max-w-[800px] mx-auto text-center">
-          <div className="flex justify-center mb-6">
+      {/* Testimonial */}
+      <section className="py-24 px-6 border-y border-white/5">
+        <div className="max-w-[700px] mx-auto text-center">
+          <div className="flex justify-center gap-1 mb-6">
             {[...Array(5)].map((_, i) => (
-              <svg key={i} className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
+              <svg key={i} className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
             ))}
           </div>
-          <blockquote className="text-[20px] font-medium leading-relaxed mb-6">
-            "Wir haben innerhalb von 10 Minuten 3 passende Förderprogramme gefunden. 
-            Hätte uns sonst Wochen gekostet."
+          <blockquote className="text-[22px] font-medium leading-relaxed mb-6">
+            "In 10 Minuten hatten wir 3 passende Programme gefunden. 
+            Das hätte uns sonst Wochen gekostet."
           </blockquote>
-          <div>
-            <p className="text-[14px] font-semibold">Michael K.</p>
-            <p className="text-[13px] text-black/40">Geschäftsführer, Tech-Startup München</p>
-          </div>
+          <p className="text-[14px] font-semibold">Michael K.</p>
+          <p className="text-[13px] text-white/30">Geschäftsführer, Tech-Startup München</p>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 px-6">
-        <div className="max-w-[700px] mx-auto">
-          <div className="bg-black text-white rounded-3xl p-12 text-center">
-            <h2 className="text-[28px] font-semibold tracking-tight mb-3">
-              Bereit zu sehen, was dir zusteht?
-            </h2>
-            <p className="text-white/50 text-[15px] mb-8">
-              Keine Kreditkarte. Keine Verpflichtung. Nur dein Förderpotenzial.
-            </p>
-            <Link
-              href="/auth/signup"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full text-[15px] font-semibold hover:bg-white/90 transition-colors"
-            >
-              Kostenlos starten
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-[12px] text-white/40">
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> 2 Min Setup</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> Sofortige Ergebnisse</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> DSGVO-konform</span>
-            </div>
-          </div>
+      <section className="py-32 px-6">
+        <div className="max-w-[600px] mx-auto text-center">
+          <h2 className="text-[clamp(32px,6vw,52px)] font-bold tracking-tight mb-4">
+            Bereit?
+          </h2>
+          <p className="text-white/40 text-[16px] mb-10">
+            Finde in 5 Minuten heraus, welche Fördermittel 
+            deinem Unternehmen zustehen.
+          </p>
+          <Link
+            href="/auth/signup"
+            className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-black rounded-full text-[16px] font-semibold hover:scale-[1.02] transition-transform"
+          >
+            Jetzt kostenlos starten
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <p className="mt-6 text-[12px] text-white/20">
+            Keine Kreditkarte · Keine Verpflichtung
+          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-black/5">
+      <footer className="py-8 px-6 border-t border-white/5">
         <div className="max-w-[1000px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="text-[14px] font-semibold">foedr.</span>
-          <div className="flex gap-6 text-[12px] text-black/40">
-            <Link href="/impressum" className="hover:text-black transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-black transition-colors">Datenschutz</Link>
+          <span className="text-[15px] font-bold">foedr<span className="text-white/30">.</span></span>
+          <div className="flex gap-6 text-[12px] text-white/30">
+            <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
           </div>
-          <span className="text-[12px] text-black/20">© 2026</span>
+          <span className="text-[12px] text-white/20">© 2026</span>
         </div>
       </footer>
     </div>
