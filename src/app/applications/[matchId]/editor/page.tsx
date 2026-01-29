@@ -27,6 +27,14 @@ interface Match {
     name: string;
     shortName: string;
     provider: string;
+    maxAmount: number | null;
+    fundingRate: number | null;
+  };
+  company: {
+    name: string;
+    industry: string;
+    state: string;
+    size: string;
   };
 }
 
@@ -58,7 +66,6 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
         const tmpl = getTemplateForProgram(data.match.program.id);
         setTemplate(tmpl);
         
-        // Load saved data from localStorage
         const saved = localStorage.getItem(`foedr-application-${id}`);
         if (saved) {
           setFormData(JSON.parse(saved));
@@ -80,7 +87,6 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
   const handleFieldChange = (fieldId: string, value: string) => {
     const newData = { ...formData, [fieldId]: value };
     setFormData(newData);
-    // Auto-save
     localStorage.setItem(`foedr-application-${matchId}`, JSON.stringify(newData));
   };
 
@@ -109,33 +115,310 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
     return Math.round((completed / allFields.length) * 100);
   };
 
-  const generateDocument = async () => {
+  const generatePDF = async () => {
     setGenerating(true);
-    
-    // Create document content
-    let content = `# ${template?.programName}\n`;
-    content += `## Antrag für: ${match?.program.name}\n\n`;
-    content += `Erstellt am: ${new Date().toLocaleDateString("de-DE")}\n\n`;
-    content += `---\n\n`;
 
-    template?.sections.forEach(section => {
-      content += `## ${section.title}\n\n`;
-      section.fields.forEach(field => {
-        content += `### ${field.label}\n\n`;
-        content += `${formData[field.id] || "[Noch nicht ausgefüllt]"}\n\n`;
-      });
+    const formatCurrency = (amount: number | null) => {
+      if (!amount) return "—";
+      return new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0,
+      }).format(amount);
+    };
+
+    const currentDate = new Date().toLocaleDateString("de-DE", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
     });
 
-    // Create and download file
-    const blob = new Blob([content], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Antrag_${match?.program.shortName || "Foerderung"}_${new Date().toISOString().split("T")[0]}.md`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Create professional HTML document
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Förderantrag - ${match?.program.name}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: white;
+    }
+    
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 20mm 25mm;
+    }
+    
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #000;
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      font-size: 28pt;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+    
+    .logo span {
+      color: #888;
+    }
+    
+    .header-info {
+      text-align: right;
+      font-size: 9pt;
+      color: #666;
+    }
+    
+    /* Title Section */
+    .title-section {
+      margin-bottom: 40px;
+    }
+    
+    .document-type {
+      font-size: 10pt;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .document-title {
+      font-size: 24pt;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+    
+    .program-badge {
+      display: inline-block;
+      background: #f0f0f0;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 10pt;
+      font-weight: 500;
+    }
+    
+    /* Info Grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 8px;
+    }
+    
+    .info-block h4 {
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    
+    .info-block p {
+      font-size: 11pt;
+      font-weight: 500;
+    }
+    
+    /* Sections */
+    .section {
+      margin-bottom: 35px;
+      page-break-inside: avoid;
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .section-number {
+      width: 32px;
+      height: 32px;
+      background: #000;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14pt;
+    }
+    
+    .section-title {
+      font-size: 16pt;
+      font-weight: 600;
+    }
+    
+    /* Fields */
+    .field {
+      margin-bottom: 25px;
+    }
+    
+    .field-label {
+      font-size: 10pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    
+    .field-content {
+      font-size: 11pt;
+      line-height: 1.7;
+      color: #333;
+      text-align: justify;
+    }
+    
+    .field-content.empty {
+      color: #999;
+      font-style: italic;
+    }
+    
+    /* Footer */
+    .footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      font-size: 8pt;
+      color: #888;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .disclaimer {
+      max-width: 70%;
+      line-height: 1.5;
+    }
+    
+    /* Print Styles */
+    @media print {
+      body {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      
+      .page {
+        padding: 15mm 20mm;
+      }
+      
+      .section {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">foedr<span>.</span></div>
+      <div class="header-info">
+        <div>Erstellt am ${currentDate}</div>
+        <div>Referenz: ${matchId.slice(0, 8).toUpperCase()}</div>
+      </div>
+    </div>
+    
+    <!-- Title -->
+    <div class="title-section">
+      <div class="document-type">Antragsunterlagen</div>
+      <h1 class="document-title">${match?.program.name}</h1>
+      <div class="program-badge">${match?.program.provider} · ${match?.program.fundingRate ? `${match.program.fundingRate}% Förderquote` : 'Förderkredit'} · Max. ${formatCurrency(match?.program.maxAmount || 0)}</div>
+    </div>
+    
+    <!-- Company Info -->
+    <div class="info-grid">
+      <div class="info-block">
+        <h4>Antragsteller</h4>
+        <p>${match?.company.name || 'Unternehmen'}</p>
+      </div>
+      <div class="info-block">
+        <h4>Standort</h4>
+        <p>${getStateLabel(match?.company.state || '')}</p>
+      </div>
+      <div class="info-block">
+        <h4>Branche</h4>
+        <p>${getIndustryLabel(match?.company.industry || '')}</p>
+      </div>
+      <div class="info-block">
+        <h4>Match-Score</h4>
+        <p>${match?.score}%</p>
+      </div>
+    </div>
+    
+    <!-- Content Sections -->
+    ${template?.sections.map((section, sIndex) => `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-number">${sIndex + 1}</div>
+          <h2 class="section-title">${section.title}</h2>
+        </div>
+        
+        ${section.fields.map(field => `
+          <div class="field">
+            <div class="field-label">${field.label}</div>
+            <div class="field-content ${!formData[field.id] ? 'empty' : ''}">
+              ${formData[field.id] || '[Noch nicht ausgefüllt]'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('')}
+    
+    <!-- Footer -->
+    <div class="footer">
+      <div class="disclaimer">
+        Dieses Dokument wurde mit foedr. erstellt und dient der Antragsvorbereitung. 
+        Es ersetzt keine Förderberatung oder Rechtsberatung. Die finale Einreichung 
+        erfolgt über das offizielle Portal des Fördergebers.
+      </div>
+      <div>
+        foedr. · ${currentDate}
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    window.onload = function() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
+    `;
+
+    // Open print dialog
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+    }
 
     setGenerating(false);
   };
@@ -194,12 +477,12 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
               Speichern
             </button>
             <button
-              onClick={generateDocument}
-              disabled={generating || totalProgress < 50}
+              onClick={generatePDF}
+              disabled={generating || totalProgress < 30}
               className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-xl text-sm font-medium hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              Dokument erstellen
+              PDF erstellen
             </button>
           </div>
         </div>
@@ -293,7 +576,6 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
                     </button>
                   </div>
 
-                  {/* Tips Panel */}
                   {tipsOpen && (
                     <div className="mb-3 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
                       <div className="flex items-start gap-2 mb-2">
@@ -316,7 +598,6 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
                     className="w-full px-4 py-3 bg-[#0A0A0A] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 resize-none"
                   />
 
-                  {/* Character Count & Status */}
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-2">
                       {status === "good" && (
@@ -326,12 +607,12 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
                       )}
                       {status === "short" && (
                         <span className="flex items-center gap-1 text-xs text-yellow-400">
-                          <AlertCircle className="w-3 h-3" /> Noch {field.minChars - charCount} Zeichen benötigt
+                          <AlertCircle className="w-3 h-3" /> Noch {field.minChars - charCount} Zeichen
                         </span>
                       )}
                       {status === "long" && (
                         <span className="flex items-center gap-1 text-xs text-red-400">
-                          <AlertCircle className="w-3 h-3" /> {charCount - field.maxChars} Zeichen zu viel
+                          <AlertCircle className="w-3 h-3" /> {charCount - field.maxChars} zu viel
                         </span>
                       )}
                     </div>
@@ -341,7 +622,7 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
                       status === "long" ? "text-red-400" :
                       "text-white/40"
                     }`}>
-                      {charCount} / {field.minChars}-{field.maxChars} Zeichen
+                      {charCount} / {field.minChars}-{field.maxChars}
                     </span>
                   </div>
                 </div>
@@ -355,7 +636,7 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
           <button
             onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
             disabled={currentSection === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 rounded-xl text-sm transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 rounded-xl text-sm transition-colors disabled:opacity-30"
           >
             <ArrowLeft className="w-4 h-4" />
             Zurück
@@ -383,16 +664,39 @@ export default function ApplicationEditorPage({ params }: { params: Promise<{ ma
             </button>
           ) : (
             <button
-              onClick={generateDocument}
-              disabled={generating || totalProgress < 50}
+              onClick={generatePDF}
+              disabled={generating || totalProgress < 30}
               className="flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600 transition-colors disabled:opacity-50"
             >
               <Download className="w-4 h-4" />
-              Dokument erstellen
+              PDF erstellen
             </button>
           )}
         </div>
       </div>
     </DashboardLayout>
   );
+}
+
+// Helper functions
+function getStateLabel(state: string): string {
+  const labels: Record<string, string> = {
+    BW: "Baden-Württemberg", BY: "Bayern", BE: "Berlin", BB: "Brandenburg",
+    HB: "Bremen", HH: "Hamburg", HE: "Hessen", MV: "Mecklenburg-Vorpommern",
+    NI: "Niedersachsen", NW: "Nordrhein-Westfalen", RP: "Rheinland-Pfalz",
+    SL: "Saarland", SN: "Sachsen", ST: "Sachsen-Anhalt", SH: "Schleswig-Holstein",
+    TH: "Thüringen"
+  };
+  return labels[state] || state;
+}
+
+function getIndustryLabel(industry: string): string {
+  const labels: Record<string, string> = {
+    manufacturing: "Produktion / Fertigung", it: "IT / Software",
+    consulting: "Beratung / Dienstleistung", retail: "Handel / E-Commerce",
+    healthcare: "Gesundheit / Medizin", construction: "Bau / Handwerk",
+    logistics: "Logistik / Transport", food: "Lebensmittel / Gastronomie",
+    energy: "Energie / Umwelt", other: "Andere"
+  };
+  return labels[industry] || industry;
 }
