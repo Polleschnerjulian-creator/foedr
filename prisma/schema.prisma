@@ -7,30 +7,75 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  company       Company?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Company {
   id        String   @id @default(cuid())
-  clerkId   String   @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   name      String
   industry  String
   state     String
   size      String   @default("SMALL")
   employees Int?
-  revenue   Int?
-  balance   Int?
+  
   rdActive        Boolean @default(false)
-  exportActive    Boolean @default(false)
   digitalActive   Boolean @default(false)
   greenActive     Boolean @default(false)
+  exportActive    Boolean @default(false)
+  
   planInvestment  Boolean @default(false)
   planHiring      Boolean @default(false)
-  planConsulting  Boolean @default(false)
   planInnovation  Boolean @default(false)
+  planDigital     Boolean @default(false)
+  planGreen       Boolean @default(false)
+  
   onboardingComplete Boolean @default(false)
+  
   matches      Match[]
-  applications Application[]
-  alerts       Alert[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Program {
@@ -45,80 +90,42 @@ model Program {
   fundingRate Int?
   deadline    DateTime?
   isRecurring Boolean  @default(false)
-  targetSizes     String[]
+  
+  targetSizes      String[]
   targetIndustries String[]
-  targetStates    String[]
-  requiresRD      Boolean @default(false)
-  requiresExport  Boolean @default(false)
-  requiresDigital Boolean @default(false)
-  requiresGreen   Boolean @default(false)
-  url         String?
-  isActive    Boolean  @default(true)
-  matches      Match[]
-  applications Application[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  targetStates     String[]
+  
+  requiresRD       Boolean @default(false)
+  requiresDigital  Boolean @default(false)
+  requiresGreen    Boolean @default(false)
+  requiresExport   Boolean @default(false)
+  
+  url        String?
+  isActive   Boolean  @default(true)
+  
+  matches    Match[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Match {
   id        String @id @default(cuid())
+  
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId String
+  
   program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
   programId String
+  
   score       Int
   eligible    Boolean
   reasons     String[]
   risks       String[]
   nextSteps   String[]
   status      String @default("NEW")
-  savedAt     DateTime?
-  dismissedAt DateTime?
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
   @@unique([companyId, programId])
-}
-
-model Application {
-  id        String @id @default(cuid())
-  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  companyId String
-  program   Program @relation(fields: [programId], references: [id])
-  programId String
-  status    String @default("INTERESTED")
-  requestedAmount Int?
-  approvedAmount  Int?
-  submittedAt DateTime?
-  approvedAt  DateTime?
-  rejectedAt  DateTime?
-  notes String?
-  documents Document[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Document {
-  id            String @id @default(cuid())
-  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  applicationId String
-  name     String
-  type     String
-  url      String
-  size     Int
-  required Boolean @default(false)
-  uploaded Boolean @default(false)
-  createdAt DateTime @default(now())
-}
-
-model Alert {
-  id        String @id @default(cuid())
-  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  companyId String
-  type      String
-  title     String
-  message   String
-  programId String?
-  read      Boolean   @default(false)
-  readAt    DateTime?
-  createdAt DateTime @default(now())
 }
